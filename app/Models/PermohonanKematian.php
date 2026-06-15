@@ -9,6 +9,7 @@ class PermohonanKematian extends Model
     protected $table = 'permohonan_kematian';
 
     protected $fillable = [
+        'nomor_surat',
         'nik_jenazah',
         'nama_jenazah',
         'jenis_kelamin_jenazah',

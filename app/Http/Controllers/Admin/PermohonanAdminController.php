@@ -57,16 +57,32 @@ class PermohonanAdminController extends Controller
 
         if ($tipe === 'tidak_mampu') {
             $permohonan = PermohonanTidakMampu::findOrFail($id);
+
+            // Generate nomor surat otomatis
+            $tahun = date('Y');
+            $urutan = PermohonanTidakMampu::where('status', 'approved')
+                ->whereYear('updated_at', $tahun)
+                ->count() + 1;
+            $nomorSurat = '141.4/' . str_pad($urutan, 3, '0', STR_PAD_LEFT) . '/DS/' . $tahun;
+
         } else {
             $permohonan = PermohonanKematian::findOrFail($id);
+
+            // Generate nomor surat otomatis
+            $tahun = date('Y');
+            $urutan = PermohonanKematian::where('status', 'approved')
+                ->whereYear('updated_at', $tahun)
+                ->count() + 1;
+            $nomorSurat = '474/' . str_pad($urutan, 3, '0', STR_PAD_LEFT) . '/PEM/' . $tahun;
         }
 
         $permohonan->update([
             'status'        => 'approved',
+            'nomor_surat'   => $nomorSurat,
             'catatan_admin' => $request->catatan_admin,
         ]);
 
-        return back()->with('success', 'Permohonan berhasil disetujui.');
+        return back()->with('success', 'Permohonan berhasil disetujui. Nomor surat: ' . $nomorSurat);
     }
 
     public function reject(Request $request, $tipe, $id)

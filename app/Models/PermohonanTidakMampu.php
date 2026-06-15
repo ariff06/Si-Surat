@@ -9,6 +9,7 @@ class PermohonanTidakMampu extends Model
     protected $table = 'permohonan_tidak_mampu';
 
     protected $fillable = [
+        'nomor_surat',
         'nama_lengkap',
         'jenis_kelamin',
         'tempat_lahir',

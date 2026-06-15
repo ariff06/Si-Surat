@@ -43,7 +43,7 @@
     {{-- Judul --}}
     <div class="judul">
         <h2>SURAT KETERANGAN KEMATIAN</h2>
-        <p>Nomor : 474/{{ $permohonan->id }}/PEM/{{ date('Y') }}</p>
+        <p>Nomor : {{ $permohonan->nomor_surat }}</p>
     </div>
 
     {{-- Isi --}}

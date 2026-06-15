@@ -82,7 +82,7 @@ class PermohonanController extends Controller
 
         // Cek NIK yang sama dengan status pending atau approved
         $existing = PermohonanTidakMampu::where('nama_lengkap', $request->nama_lengkap)
-            ->whereIn('status', ['pending', 'approved'])
+            ->whereIn('rt_status', ['pending', 'approved'])
             ->first();
 
         if ($existing) {
@@ -156,6 +156,17 @@ class PermohonanController extends Controller
             'nomor_rt'              => 'required|string|max:10',
         ]);
 
+        // Cek NIK jenazah SEBELUM simpan
+        $existing = PermohonanKematian::where('nik_jenazah', $request->nik_jenazah)
+            ->whereIn('rt_status', ['pending', 'approved'])
+            ->first();
+
+        if ($existing) {
+            return back()->withErrors([
+                'nik_jenazah' => 'Permohonan dengan NIK jenazah ini sedang dalam proses. Silakan cek status dengan kode referensi yang sudah diterima.',
+            ])->withInput();
+        }
+
         $permohonan = PermohonanKematian::create([
             'nik_jenazah'           => $request->nik_jenazah,
             'nama_jenazah'          => $request->nama_jenazah,
@@ -177,17 +188,6 @@ class PermohonanController extends Controller
             'nomor_rt'              => $request->nomor_rt,
             'token_download'        => Str::uuid(),
         ]);
-
-        // Cek NIK jenazah yang sama dengan status pending atau approved
-        $existing = PermohonanKematian::where('nik_jenazah', $request->nik_jenazah)
-            ->whereIn('status', ['pending', 'approved'])
-            ->first();
-
-        if ($existing) {
-            return back()->withErrors([
-                'nik_jenazah' => 'Permohonan dengan NIK jenazah ini sedang dalam proses atau sudah disetujui. Silakan cek status permohonan Anda dengan kode referensi yang sudah diterima.',
-            ])->withInput();
-        }
 
         foreach (['ktp', 'kk'] as $jenis) {
             $path = $request->file($jenis)->store("dokumen/{$jenis}", 'public');

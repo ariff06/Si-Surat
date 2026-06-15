@@ -67,7 +67,7 @@
     {{-- Judul --}}
     <div class="judul">
         <h2>SURAT KETERANGAN TIDAK MAMPU</h2>
-        <p>Nomor : 141.4/{{ str_pad($permohonan->id, 3, '0', STR_PAD_LEFT) }}/DS/{{ date('Y') }}</p>
+        <p>Nomor : {{ $permohonan->nomor_surat }}</p>
     </div>
 
     {{-- Pembuka --}}
