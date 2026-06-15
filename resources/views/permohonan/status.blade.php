@@ -206,11 +206,21 @@
                     Jika membutuhkan salinan, silakan hubungi kantor desa.
                 </p>
             @else
-                <a href="{{ route('surat.download', ['tipe' => $tipe, 'token' => $permohonan->token_download]) }}"
+                <a id="btn-download"
+                    href="{{ route('surat.download', ['tipe' => $tipe, 'token' => $permohonan->token_download]) }}"
+                    onclick="handleDownload(this)"
                     class="w-full block text-center text-white py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:opacity-90"
                     style="background: linear-gradient(135deg, #14532d, #16a34a);">
                     ⬇ Download Surat
                 </a>
+
+                <script>
+                function handleDownload(el) {
+                    setTimeout(function() {
+                        el.outerHTML = '<div class="w-full block text-center bg-gray-100 border border-gray-200 text-gray-400 py-3 rounded-xl font-semibold text-sm cursor-not-allowed">✓ Surat Sudah Didownload</div>';
+                    }, 1000);
+                }
+                </script>
             @endif
         </div>
     @endif
