@@ -33,7 +33,7 @@
     <div class="px-6 py-4 border-t">
         <p class="text-xs text-gray-400">Jln. Aswan Krajan I</p>
         <p class="text-xs text-gray-400">Tlp. (0267) &bull; Kode Pos 41355</p>
-        <a href="{{ route('admin.login') }}" class="text-xs text-gray-200 hover:text-gray-400 transition mt-2 block">
+        <a href="{{ route('portal') }}" class="text-xs text-gray-200 hover:text-gray-400 transition mt-2 block">
             v1.0
         </a>
     </div>

@@ -6,6 +6,9 @@ use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\Admin\PermohonanAdminController;
 
 // Route untuk warga (guest)
+Route::get('/portal', function () {
+    return view('portal');
+})->name('portal');
 Route::get('/', [PermohonanController::class, 'dashboard'])->name('permohonan.dashboard');
 
 Route::prefix('surat')->name('surat.')->group(function () {
