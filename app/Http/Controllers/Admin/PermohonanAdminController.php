@@ -14,6 +14,7 @@ class PermohonanAdminController extends Controller
     {
         $search   = $request->input('search');
         $nomorRt  = $request->input('nomor_rt');
+        $status   = $request->input('status');
 
         $tidakMampu = PermohonanTidakMampu::where('rt_status', 'approved')
             ->when($search, function ($query) use ($search) {
@@ -23,7 +24,10 @@ class PermohonanAdminController extends Controller
             ->when($nomorRt, function ($query) use ($nomorRt) {
                 $query->where('nomor_rt', $nomorRt);
             })
-            ->latest()->get();
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->latest()->paginate(10, ['*'], 'page_tm');
 
         $kematian = PermohonanKematian::where('rt_status', 'approved')
             ->when($search, function ($query) use ($search) {
@@ -33,9 +37,12 @@ class PermohonanAdminController extends Controller
             ->when($nomorRt, function ($query) use ($nomorRt) {
                 $query->where('nomor_rt', $nomorRt);
             })
-            ->latest()->get();
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->latest()->paginate(10, ['*'], 'page_k');
 
-        return view('admin.permohonan.index', compact('tidakMampu', 'kematian', 'search', 'nomorRt'));
+        return view('admin.permohonan.index', compact('tidakMampu', 'kematian', 'search', 'nomorRt', 'status'));
     }
 
     public function show($tipe, $id)

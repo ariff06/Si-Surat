@@ -21,6 +21,12 @@
             <input type="text" name="search" value="{{ request('search') }}"
                 placeholder="Cari nama pemohon, jenazah, atau pelapor..."
                 class="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <select name="status" class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="">Semua Status</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+            </select>
             <select name="nomor_rt" class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <option value="">Semua RT</option>
                 @for($i = 1; $i <= 70; $i++)
@@ -31,9 +37,9 @@
             </select>
             <button type="submit"
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
-                Cari
+                Filter
             </button>
-            @if(request('search') || request('nomor_rt'))
+            @if(request('search') || request('nomor_rt') || request('status'))
                 <a href="{{ route('admin.permohonan.index') }}"
                     class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
                     Reset
