@@ -13,6 +13,28 @@
         </div>
     @endif
 
+    {{-- Filter status --}}
+    <form method="GET" action="{{ route('rt.dashboard') }}" class="mb-5">
+        <div class="flex gap-3">
+            <select name="status" class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400">
+                <option value="">Semua Status</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+            </select>
+            <button type="submit"
+                class="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition">
+                Filter
+            </button>
+            @if(request('status'))
+                <a href="{{ route('rt.dashboard') }}"
+                    class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
+                    Reset
+                </a>
+            @endif
+        </div>
+    </form>
+
     {{-- Tab filter --}}
     <div class="flex gap-2 mb-5">
         <button onclick="showTab('tidak_mampu')" id="tab-tidak_mampu"

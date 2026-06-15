@@ -200,6 +200,13 @@
                 @endif
             </div>
 
+            {{-- Kode referensi warga --}}
+            <div class="bg-white rounded-lg shadow p-5">
+                <p class="text-xs text-gray-400 uppercase tracking-wide mb-2">Kode Referensi Warga</p>
+                <p class="text-xs font-mono text-gray-600 break-all mb-3">{{ $permohonan->token_download }}</p>
+                <p class="text-xs text-gray-400">Berikan kode ini ke warga jika mereka belum menyimpannya, untuk mengecek status permohonan.</p>
+            </div>
+
         </div>
     </div>
 

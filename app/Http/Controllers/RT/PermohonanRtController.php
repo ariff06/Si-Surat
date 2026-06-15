@@ -10,14 +10,24 @@ use App\Models\PermohonanKematian;
 
 class PermohonanRtController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $nomorRt = Auth::guard('rt')->user()->nomor_rt;
+        $status  = $request->input('status');
 
-        $tidakMampu = PermohonanTidakMampu::where('nomor_rt', $nomorRt)->latest()->get();
-        $kematian   = PermohonanKematian::where('nomor_rt', $nomorRt)->latest()->get();
+        $tidakMampu = PermohonanTidakMampu::where('nomor_rt', $nomorRt)
+            ->when($status, function ($query) use ($status) {
+                $query->where('rt_status', $status);
+            })
+            ->latest()->get();
 
-        return view('rt.permohonan.index', compact('tidakMampu', 'kematian'));
+        $kematian = PermohonanKematian::where('nomor_rt', $nomorRt)
+            ->when($status, function ($query) use ($status) {
+                $query->where('rt_status', $status);
+            })
+            ->latest()->get();
+
+        return view('rt.permohonan.index', compact('tidakMampu', 'kematian', 'status'));
     }
 
     public function show($tipe, $id)
