@@ -18,29 +18,27 @@
                 {{ $tipe === 'tidak_mampu' ? 'Surat Keterangan Tidak Mampu' : 'Surat Keterangan Kematian' }}
             </p>
         </div>
-        <div>
-            @if($permohonan->rt_status === 'rejected')
-                <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-full">
-                    ❌ Ditolak RT
-                </span>
-            @elseif($permohonan->status === 'rejected')
-                <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-full">
-                    ❌ Ditolak Desa
-                </span>
-            @elseif($permohonan->status === 'approved')
-                <span class="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1.5 rounded-full">
-                    ✅ Disetujui
-                </span>
-            @elseif($permohonan->rt_status === 'approved')
-                <span class="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full">
-                    ⏳ Verifikasi Desa
-                </span>
-            @else
-                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-semibold px-3 py-1.5 rounded-full">
-                    ⏳ Verifikasi RT
-                </span>
-            @endif
-        </div>
+        @if($permohonan->rt_status === 'rejected')
+            <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-full self-start">
+                ❌ Ditolak RT
+            </span>
+        @elseif($permohonan->status === 'rejected')
+            <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-full self-start">
+                ❌ Ditolak Desa
+            </span>
+        @elseif($permohonan->status === 'approved')
+            <span class="bg-green-50 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1.5 rounded-full self-start">
+                ✅ Disetujui
+            </span>
+        @elseif($permohonan->rt_status === 'approved')
+            <span class="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full self-start">
+                ⏳ Menunggu Desa
+            </span>
+        @else
+            <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-semibold px-3 py-1.5 rounded-full self-start">
+                ⏳ Menunggu RT
+            </span>
+        @endif
     </div>
 
     {{-- Kode referensi --}}
@@ -60,11 +58,11 @@
                 <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs flex-shrink-0">✓</div>
                 <p class="text-xs text-gray-600 font-medium">Permohonan Dikirim</p>
             </div>
-            <div class="w-0.5 h-4 {{ $permohonan->rt_status !== 'pending' ? 'bg-green-300' : 'bg-gray-200' }} ml-3"></div>
+            <div class="ml-3" style="width: 2px; height: 16px; background-color: {{ $permohonan->rt_status !== 'pending' ? '#86efac' : '#e5e7eb' }};"></div>
 
             <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0
-                    {{ $permohonan->rt_status === 'approved' ? 'bg-green-500 text-white' : ($permohonan->rt_status === 'rejected' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-400') }}">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0"
+                    style="background-color: {{ $permohonan->rt_status === 'approved' ? '#22c55e' : ($permohonan->rt_status === 'rejected' ? '#ef4444' : '#e5e7eb') }}; color: {{ $permohonan->rt_status !== 'pending' ? 'white' : '#9ca3af' }};">
                     {{ $permohonan->rt_status === 'approved' ? '✓' : ($permohonan->rt_status === 'rejected' ? '✗' : '2') }}
                 </div>
                 <p class="text-xs text-gray-600 font-medium">Verifikasi RT</p>
@@ -76,11 +74,11 @@
                     <span class="text-xs text-yellow-600">Menunggu</span>
                 @endif
             </div>
-            <div class="w-0.5 h-4 {{ $permohonan->status !== 'pending' ? 'bg-green-300' : 'bg-gray-200' }} ml-3"></div>
+            <div class="ml-3" style="width: 2px; height: 16px; background-color: {{ $permohonan->status !== 'pending' ? '#86efac' : '#e5e7eb' }};"></div>
 
             <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0
-                    {{ $permohonan->status === 'approved' ? 'bg-green-500 text-white' : ($permohonan->status === 'rejected' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-400') }}">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0"
+                    style="background-color: {{ $permohonan->status === 'approved' ? '#22c55e' : ($permohonan->status === 'rejected' ? '#ef4444' : '#e5e7eb') }}; color: {{ $permohonan->status !== 'pending' ? 'white' : '#9ca3af' }};">
                     {{ $permohonan->status === 'approved' ? '✓' : ($permohonan->status === 'rejected' ? '✗' : '3') }}
                 </div>
                 <p class="text-xs text-gray-600 font-medium">Verifikasi Desa</p>
@@ -92,11 +90,11 @@
                     <span class="text-xs text-yellow-600">Menunggu</span>
                 @endif
             </div>
-            <div class="w-0.5 h-4 {{ $permohonan->status === 'approved' ? 'bg-green-300' : 'bg-gray-200' }} ml-3"></div>
+            <div class="ml-3" style="width: 2px; height: 16px; background-color: {{ $permohonan->status === 'approved' ? '#86efac' : '#e5e7eb' }};"></div>
 
             <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0
-                    {{ $permohonan->status === 'approved' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400' }}">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0"
+                    style="background-color: {{ $permohonan->status === 'approved' ? '#22c55e' : '#e5e7eb' }}; color: {{ $permohonan->status === 'approved' ? 'white' : '#9ca3af' }};">
                     {{ $permohonan->status === 'approved' ? '✓' : '4' }}
                 </div>
                 <p class="text-xs text-gray-600 font-medium">Selesai</p>
@@ -109,26 +107,26 @@
                 <div class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">✓</div>
                 <p class="text-xs text-gray-500 mt-1 text-center">Submit</p>
             </div>
-            <div class="flex-1 h-0.5 {{ $permohonan->rt_status !== 'pending' ? 'bg-green-400' : 'bg-gray-200' }}"></div>
+            <div class="flex-1 h-0.5" style="background-color: {{ $permohonan->rt_status !== 'pending' ? '#86efac' : '#e5e7eb' }};"></div>
             <div class="flex flex-col items-center">
-                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs
-                    {{ $permohonan->rt_status === 'approved' ? 'bg-green-500 text-white' : ($permohonan->rt_status === 'rejected' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-400') }}">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs"
+                    style="background-color: {{ $permohonan->rt_status === 'approved' ? '#22c55e' : ($permohonan->rt_status === 'rejected' ? '#ef4444' : '#e5e7eb') }}; color: {{ $permohonan->rt_status !== 'pending' ? 'white' : '#9ca3af' }};">
                     {{ $permohonan->rt_status === 'approved' ? '✓' : ($permohonan->rt_status === 'rejected' ? '✗' : '2') }}
                 </div>
                 <p class="text-xs text-gray-500 mt-1 text-center">Verifikasi RT</p>
             </div>
-            <div class="flex-1 h-0.5 {{ $permohonan->status !== 'pending' ? 'bg-green-400' : 'bg-gray-200' }}"></div>
+            <div class="flex-1 h-0.5" style="background-color: {{ $permohonan->status !== 'pending' ? '#86efac' : '#e5e7eb' }};"></div>
             <div class="flex flex-col items-center">
-                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs
-                    {{ $permohonan->status === 'approved' ? 'bg-green-500 text-white' : ($permohonan->status === 'rejected' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-400') }}">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs"
+                    style="background-color: {{ $permohonan->status === 'approved' ? '#22c55e' : ($permohonan->status === 'rejected' ? '#ef4444' : '#e5e7eb') }}; color: {{ $permohonan->status !== 'pending' ? 'white' : '#9ca3af' }};">
                     {{ $permohonan->status === 'approved' ? '✓' : ($permohonan->status === 'rejected' ? '✗' : '3') }}
                 </div>
                 <p class="text-xs text-gray-500 mt-1 text-center">Verifikasi Desa</p>
             </div>
-            <div class="flex-1 h-0.5 {{ $permohonan->status === 'approved' ? 'bg-green-400' : 'bg-gray-200' }}"></div>
+            <div class="flex-1 h-0.5" style="background-color: {{ $permohonan->status === 'approved' ? '#86efac' : '#e5e7eb' }};"></div>
             <div class="flex flex-col items-center">
-                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs
-                    {{ $permohonan->status === 'approved' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400' }}">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs"
+                    style="background-color: {{ $permohonan->status === 'approved' ? '#22c55e' : '#e5e7eb' }}; color: {{ $permohonan->status === 'approved' ? 'white' : '#9ca3af' }};">
                     {{ $permohonan->status === 'approved' ? '✓' : '4' }}
                 </div>
                 <p class="text-xs text-gray-500 mt-1 text-center">Selesai</p>
@@ -136,7 +134,7 @@
         </div>
     </div>
 
-    {{-- Data permohonan --}}
+    {{-- Detail permohonan --}}
     <div class="space-y-3">
         <p class="text-xs text-gray-400 uppercase tracking-wide">Detail Permohonan</p>
 
@@ -181,10 +179,17 @@
         @endif
     </div>
 
-    {{-- Catatan admin --}}
+    {{-- Catatan admin/RT --}}
+    @if($permohonan->rt_catatan && $permohonan->rt_status === 'rejected')
+        <div class="mt-5 bg-red-50 border border-red-100 rounded-lg p-4">
+            <p class="text-xs text-red-600 font-semibold mb-1">Catatan dari RT</p>
+            <p class="text-sm text-red-700">{{ $permohonan->rt_catatan }}</p>
+        </div>
+    @endif
+
     @if($permohonan->catatan_admin)
-        <div class="mt-5 bg-blue-50 border border-blue-100 rounded-lg p-4">
-            <p class="text-xs text-blue-600 font-semibold mb-1">Catatan dari Petugas</p>
+        <div class="mt-4 bg-blue-50 border border-blue-100 rounded-lg p-4">
+            <p class="text-xs text-blue-600 font-semibold mb-1">Catatan dari Petugas Desa</p>
             <p class="text-sm text-blue-700">{{ $permohonan->catatan_admin }}</p>
         </div>
     @endif
@@ -216,7 +221,7 @@
 <div class="bg-white rounded-lg shadow p-5">
     <p class="text-sm font-medium text-gray-700 mb-3">Cek Status Permohonan Lain</p>
     <form method="GET" action="{{ route('surat.cek-status') }}">
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
             <input type="text" name="token" placeholder="Masukkan kode referensi"
                 class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
             <select name="tipe" class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">

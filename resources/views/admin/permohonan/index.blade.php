@@ -15,17 +15,25 @@
         </div>
     @endif
 
-    {{-- Search bar --}}
+    {{-- Search & Filter --}}
     <form method="GET" action="{{ route('admin.permohonan.index') }}" class="mb-5">
-        <div class="flex gap-3">
+        <div class="flex gap-3 flex-wrap">
             <input type="text" name="search" value="{{ request('search') }}"
                 placeholder="Cari nama pemohon, jenazah, atau pelapor..."
                 class="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <select name="nomor_rt" class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="">Semua RT</option>
+                @for($i = 1; $i <= 70; $i++)
+                    <option value="{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}" {{ request('nomor_rt') == str_pad($i, 3, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
+                        RT {{ str_pad($i, 3, '0', STR_PAD_LEFT) }}
+                    </option>
+                @endfor
+            </select>
             <button type="submit"
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
                 Cari
             </button>
-            @if(request('search'))
+            @if(request('search') || request('nomor_rt'))
                 <a href="{{ route('admin.permohonan.index') }}"
                     class="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition">
                     Reset

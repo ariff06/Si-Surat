@@ -12,21 +12,30 @@ class PermohonanAdminController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search   = $request->input('search');
+        $nomorRt  = $request->input('nomor_rt');
 
         $tidakMampu = PermohonanTidakMampu::where('rt_status', 'approved')
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_lengkap', 'like', "%{$search}%")
                     ->orWhere('anak_nama_lengkap', 'like', "%{$search}%");
-            })->latest()->get();
+            })
+            ->when($nomorRt, function ($query) use ($nomorRt) {
+                $query->where('nomor_rt', $nomorRt);
+            })
+            ->latest()->get();
 
         $kematian = PermohonanKematian::where('rt_status', 'approved')
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_jenazah', 'like', "%{$search}%")
                     ->orWhere('nama_pelapor', 'like', "%{$search}%");
-            })->latest()->get();
+            })
+            ->when($nomorRt, function ($query) use ($nomorRt) {
+                $query->where('nomor_rt', $nomorRt);
+            })
+            ->latest()->get();
 
-        return view('admin.permohonan.index', compact('tidakMampu', 'kematian', 'search'));
+        return view('admin.permohonan.index', compact('tidakMampu', 'kematian', 'search', 'nomorRt'));
     }
 
     public function show($tipe, $id)
