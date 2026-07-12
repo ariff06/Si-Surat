@@ -55,7 +55,8 @@
             @if($tidakMampu->isEmpty())
                 <div class="p-8 text-center text-gray-400 text-sm">Belum ada permohonan dari RT {{ Auth::guard('rt')->user()->nomor_rt }}.</div>
             @else
-                <table class="w-full text-sm">
+                {{-- Desktop --}}
+                <table class="hidden md:table w-full text-sm">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100">
                             <th class="text-left px-5 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">Nama Pemohon</th>
@@ -82,14 +83,36 @@
                             </td>
                             <td class="px-5 py-3">
                                 <a href="{{ route('rt.permohonan.show', ['tipe' => 'tidak_mampu', 'id' => $item->id]) }}"
-                                    class="text-orange-600 hover:underline text-xs font-medium">
-                                    Lihat Detail
-                                </a>
+                                    class="text-orange-600 hover:underline text-xs font-medium">Lihat Detail</a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Mobile --}}
+                <div class="md:hidden divide-y divide-gray-100">
+                    @foreach($tidakMampu as $item)
+                    <div class="p-4">
+                        <div class="flex items-start justify-between mb-2">
+                            <p class="text-sm font-semibold text-gray-700">{{ $item->nama_lengkap }}</p>
+                            @if($item->rt_status === 'pending')
+                                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-medium px-2 py-0.5 rounded-full">Pending</span>
+                            @elseif($item->rt_status === 'approved')
+                                <span class="bg-green-50 text-green-700 border border-green-200 text-xs font-medium px-2 py-0.5 rounded-full">Disetujui</span>
+                            @else
+                                <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-medium px-2 py-0.5 rounded-full">Ditolak</span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-gray-400 mb-1">{{ $item->keperluan }}</p>
+                        <p class="text-xs text-gray-400 mb-3">{{ $item->created_at->format('d M Y') }}</p>
+                        <a href="{{ route('rt.permohonan.show', ['tipe' => 'tidak_mampu', 'id' => $item->id]) }}"
+                            class="block text-center bg-orange-50 text-orange-600 border border-orange-200 text-xs font-medium py-2 rounded-lg hover:bg-orange-100 transition">
+                            Lihat Detail →
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>
@@ -100,7 +123,8 @@
             @if($kematian->isEmpty())
                 <div class="p-8 text-center text-gray-400 text-sm">Belum ada permohonan dari RT {{ Auth::guard('rt')->user()->nomor_rt }}.</div>
             @else
-                <table class="w-full text-sm">
+                {{-- Desktop --}}
+                <table class="hidden md:table w-full text-sm">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100">
                             <th class="text-left px-5 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">Nama Jenazah</th>
@@ -127,14 +151,36 @@
                             </td>
                             <td class="px-5 py-3">
                                 <a href="{{ route('rt.permohonan.show', ['tipe' => 'kematian', 'id' => $item->id]) }}"
-                                    class="text-orange-600 hover:underline text-xs font-medium">
-                                    Lihat Detail
-                                </a>
+                                    class="text-orange-600 hover:underline text-xs font-medium">Lihat Detail</a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Mobile --}}
+                <div class="md:hidden divide-y divide-gray-100">
+                    @foreach($kematian as $item)
+                    <div class="p-4">
+                        <div class="flex items-start justify-between mb-2">
+                            <p class="text-sm font-semibold text-gray-700">{{ $item->nama_jenazah }}</p>
+                            @if($item->rt_status === 'pending')
+                                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs font-medium px-2 py-0.5 rounded-full">Pending</span>
+                            @elseif($item->rt_status === 'approved')
+                                <span class="bg-green-50 text-green-700 border border-green-200 text-xs font-medium px-2 py-0.5 rounded-full">Disetujui</span>
+                            @else
+                                <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-medium px-2 py-0.5 rounded-full">Ditolak</span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-gray-400 mb-1">Pelapor: {{ $item->nama_pelapor }}</p>
+                        <p class="text-xs text-gray-400 mb-3">{{ $item->created_at->format('d M Y') }}</p>
+                        <a href="{{ route('rt.permohonan.show', ['tipe' => 'kematian', 'id' => $item->id]) }}"
+                            class="block text-center bg-orange-50 text-orange-600 border border-orange-200 text-xs font-medium py-2 rounded-lg hover:bg-orange-100 transition">
+                            Lihat Detail →
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>

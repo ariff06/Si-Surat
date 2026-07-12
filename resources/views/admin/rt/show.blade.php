@@ -13,24 +13,16 @@
         </div>
     @endif
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    {{-- Info, Statistik, Aksi --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
         {{-- Info RT --}}
         <div class="bg-white rounded-lg shadow p-5">
             <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Informasi RT</p>
             <div class="space-y-2">
-                <div>
-                    <p class="text-xs text-gray-400">Nama</p>
-                    <p class="text-sm font-semibold text-gray-700">{{ $rt->name }}</p>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400">RT / RW</p>
-                    <p class="text-sm font-semibold text-gray-700">RT {{ $rt->nomor_rt }} / RW {{ $rt->nomor_rw }}</p>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400">Email</p>
-                    <p class="text-sm text-gray-600">{{ $rt->email }}</p>
-                </div>
+                <div><p class="text-xs text-gray-400">Nama</p><p class="text-sm font-semibold text-gray-700">{{ $rt->name }}</p></div>
+                <div><p class="text-xs text-gray-400">RT / RW</p><p class="text-sm font-semibold text-gray-700">RT {{ $rt->nomor_rt }} / RW {{ $rt->nomor_rw }}</p></div>
+                <div><p class="text-xs text-gray-400">Email</p><p class="text-sm text-gray-600 break-all">{{ $rt->email }}</p></div>
                 <div>
                     <p class="text-xs text-gray-400">Status Akun</p>
                     @if($rt->is_active)
@@ -61,21 +53,15 @@
                 <div class="border-t border-gray-100 pt-3 space-y-2">
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-500">Pending RT</span>
-                        <span class="font-semibold text-yellow-600">
-                            {{ $tidakMampu->where('rt_status', 'pending')->count() + $kematian->where('rt_status', 'pending')->count() }}
-                        </span>
+                        <span class="font-semibold text-yellow-600">{{ $tidakMampu->where('rt_status', 'pending')->count() + $kematian->where('rt_status', 'pending')->count() }}</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-500">Disetujui RT</span>
-                        <span class="font-semibold text-green-600">
-                            {{ $tidakMampu->where('rt_status', 'approved')->count() + $kematian->where('rt_status', 'approved')->count() }}
-                        </span>
+                        <span class="font-semibold text-green-600">{{ $tidakMampu->where('rt_status', 'approved')->count() + $kematian->where('rt_status', 'approved')->count() }}</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-500">Ditolak RT</span>
-                        <span class="font-semibold text-red-500">
-                            {{ $tidakMampu->where('rt_status', 'rejected')->count() + $kematian->where('rt_status', 'rejected')->count() }}
-                        </span>
+                        <span class="font-semibold text-red-500">{{ $tidakMampu->where('rt_status', 'rejected')->count() + $kematian->where('rt_status', 'rejected')->count() }}</span>
                     </div>
                 </div>
             </div>
@@ -109,9 +95,9 @@
 
     </div>
 
-    {{-- Daftar permohonan RT ini --}}
+    {{-- Riwayat permohonan --}}
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div class="px-5 py-4 border-b border-gray-100">
             <p class="text-sm font-semibold text-gray-700">Riwayat Permohonan RT {{ $rt->nomor_rt }}</p>
         </div>
 
@@ -134,7 +120,8 @@
             @if($tidakMampu->isEmpty())
                 <p class="text-center text-gray-400 text-sm py-4">Belum ada permohonan.</p>
             @else
-                <table class="w-full text-sm">
+                {{-- Desktop --}}
+                <table class="hidden md:table w-full text-sm">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100">
                             <th class="text-left px-4 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">Nama Pemohon</th>
@@ -172,6 +159,35 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Mobile --}}
+                <div class="md:hidden divide-y divide-gray-100">
+                    @foreach($tidakMampu as $item)
+                    <div class="py-3">
+                        <div class="flex items-start justify-between mb-1">
+                            <p class="text-sm font-semibold text-gray-700">{{ $item->nama_lengkap }}</p>
+                            @if($item->rt_status === 'pending')
+                                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded-full">Pending RT</span>
+                            @elseif($item->rt_status === 'approved')
+                                <span class="bg-green-50 text-green-700 border border-green-200 text-xs px-2 py-0.5 rounded-full">Disetujui RT</span>
+                            @else
+                                <span class="bg-red-50 text-red-700 border border-red-200 text-xs px-2 py-0.5 rounded-full">Ditolak RT</span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-gray-400 mb-1">{{ $item->keperluan }} &bull; {{ $item->created_at->format('d M Y') }}</p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400">Status Desa:</span>
+                            @if($item->status === 'pending')
+                                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded-full">Pending</span>
+                            @elseif($item->status === 'approved')
+                                <span class="bg-green-50 text-green-700 border border-green-200 text-xs px-2 py-0.5 rounded-full">Disetujui</span>
+                            @else
+                                <span class="bg-red-50 text-red-700 border border-red-200 text-xs px-2 py-0.5 rounded-full">Ditolak</span>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             @endif
         </div>
 
@@ -180,7 +196,8 @@
             @if($kematian->isEmpty())
                 <p class="text-center text-gray-400 text-sm py-4">Belum ada permohonan.</p>
             @else
-                <table class="w-full text-sm">
+                {{-- Desktop --}}
+                <table class="hidden md:table w-full text-sm">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100">
                             <th class="text-left px-4 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">Nama Jenazah</th>
@@ -218,6 +235,35 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Mobile --}}
+                <div class="md:hidden divide-y divide-gray-100">
+                    @foreach($kematian as $item)
+                    <div class="py-3">
+                        <div class="flex items-start justify-between mb-1">
+                            <p class="text-sm font-semibold text-gray-700">{{ $item->nama_jenazah }}</p>
+                            @if($item->rt_status === 'pending')
+                                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded-full">Pending RT</span>
+                            @elseif($item->rt_status === 'approved')
+                                <span class="bg-green-50 text-green-700 border border-green-200 text-xs px-2 py-0.5 rounded-full">Disetujui RT</span>
+                            @else
+                                <span class="bg-red-50 text-red-700 border border-red-200 text-xs px-2 py-0.5 rounded-full">Ditolak RT</span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-gray-400 mb-1">Pelapor: {{ $item->nama_pelapor }} &bull; {{ $item->created_at->format('d M Y') }}</p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400">Status Desa:</span>
+                            @if($item->status === 'pending')
+                                <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded-full">Pending</span>
+                            @elseif($item->status === 'approved')
+                                <span class="bg-green-50 text-green-700 border border-green-200 text-xs px-2 py-0.5 rounded-full">Disetujui</span>
+                            @else
+                                <span class="bg-red-50 text-red-700 border border-red-200 text-xs px-2 py-0.5 rounded-full">Ditolak</span>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             @endif
         </div>
 

@@ -35,6 +35,11 @@
                 class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
                 Masuk
             </button>
+            <div class="text-center mt-4">
+                <a href="{{ route('portal') }}" class="text-xs text-gray-400 hover:text-gray-600 transition">
+                    ← Kembali ke Portal
+                </a>
+            </div>
         </form>
     </div>
 

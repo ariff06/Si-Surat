@@ -36,7 +36,8 @@
 
     {{-- Tabel RT --}}
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="w-full text-sm">
+        {{-- Desktop: tabel --}}
+        <table class="hidden md:table w-full text-sm">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-100">
                     <th class="text-left px-5 py-3 text-xs text-gray-500 font-semibold uppercase tracking-wide">RT / RW</th>
@@ -74,15 +75,11 @@
                     <td class="px-5 py-3">
                         <div class="flex items-center gap-3">
                             <a href="{{ route('admin.rt.management.show', $rt->id) }}"
-                                class="text-blue-600 hover:underline text-xs font-medium">
-                                Detail
-                            </a>
+                                class="text-blue-600 hover:underline text-xs font-medium">Detail</a>
                             <form method="POST" action="{{ route('admin.rt.management.reset-password', $rt->id) }}">
                                 @csrf
                                 <button type="submit" onclick="return confirm('Reset password RT {{ $rt->nomor_rt }} ke default?')"
-                                    class="text-orange-600 hover:underline text-xs font-medium">
-                                    Reset Password
-                                </button>
+                                    class="text-orange-600 hover:underline text-xs font-medium">Reset Password</button>
                             </form>
                             <form method="POST" action="{{ route('admin.rt.management.toggle-active', $rt->id) }}">
                                 @csrf
@@ -98,6 +95,55 @@
                 @endforeach
             </tbody>
         </table>
+
+        {{-- Mobile: card --}}
+        <div class="md:hidden divide-y divide-gray-100">
+            @foreach($rtUsers as $rt)
+            <div class="p-4">
+                <div class="flex items-start justify-between mb-2">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-700">RT {{ $rt->nomor_rt }} / RW {{ $rt->nomor_rw }}</p>
+                        <p class="text-xs text-gray-500">{{ $rt->name }}</p>
+                        <p class="text-xs text-gray-400">{{ $rt->email }}</p>
+                    </div>
+                    @if($rt->is_active)
+                        <span class="bg-green-50 text-green-700 border border-green-200 text-xs font-medium px-2 py-0.5 rounded-full">Aktif</span>
+                    @else
+                        <span class="bg-red-50 text-red-700 border border-red-200 text-xs font-medium px-2 py-0.5 rounded-full">Nonaktif</span>
+                    @endif
+                </div>
+
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs text-gray-500">Permohonan: <span class="font-medium text-gray-700">{{ $rt->total_permohonan }}</span></span>
+                    @if($rt->total_pending > 0)
+                        <span class="bg-yellow-50 text-yellow-700 border border-yellow-200 text-xs px-1.5 py-0.5 rounded-full">{{ $rt->total_pending }} pending</span>
+                    @endif
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <a href="{{ route('admin.rt.management.show', $rt->id) }}"
+                        class="block text-center bg-blue-50 text-blue-600 border border-blue-200 text-xs font-medium py-2 rounded-lg hover:bg-blue-100 transition">
+                        Detail
+                    </a>
+                    <form method="POST" action="{{ route('admin.rt.management.reset-password', $rt->id) }}">
+                        @csrf
+                        <button type="submit" onclick="return confirm('Reset password RT {{ $rt->nomor_rt }}?')"
+                            class="w-full bg-orange-50 text-orange-600 border border-orange-200 text-xs font-medium py-2 rounded-lg hover:bg-orange-100 transition">
+                            Reset PW
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.rt.management.toggle-active', $rt->id) }}">
+                        @csrf
+                        <button type="submit"
+                            onclick="return confirm('{{ $rt->is_active ? 'Nonaktifkan' : 'Aktifkan' }} RT {{ $rt->nomor_rt }}?')"
+                            class="w-full {{ $rt->is_active ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-green-50 text-green-600 border border-green-200' }} text-xs font-medium py-2 rounded-lg transition">
+                            {{ $rt->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 
 @endsection
